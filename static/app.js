@@ -686,6 +686,30 @@
       throw error;
     } finally { app.refreshing = false; }
   }
+  let pendingProjectZip=null,uploadingProject=false;
+  const uploadStatus=text=>{$("project-upload-status").textContent=text;document.querySelectorAll('[data-upload-project]').forEach(b=>{b.disabled=uploadingProject;b.textContent=uploadingProject?text:(b.closest('.ol-menubar')?'上传 ZIP':'上传 ZIP 创建课题');});};
+  document.addEventListener('click',event=>{if(event.target.closest('[data-upload-project]')&&!uploadingProject){$("project-zip-file").value='';$("project-zip-file").click();}});
+  $("project-import-cancel").addEventListener('click',()=>$("project-import-dialog").close());
+  async function uploadProjectZip(entry){
+    if(!pendingProjectZip||uploadingProject)return;
+    if(pendingProjectZip.size>64*1024*1024)throw Error('ZIP 最大支持 64 MB');
+    if(window.paperEditorBeforeProjectChange)await window.paperEditorBeforeProjectChange();
+    uploadingProject=true;uploadStatus('正在上传并解压…');
+    try{
+      const params=new URLSearchParams({name:pendingProjectZip.name});if(entry)params.set('entry',entry);
+      const response=await fetch('/api/projects/upload-zip?'+params,{method:'POST',headers:{'Content-Type':'application/zip'},body:pendingProjectZip});
+      const data=await response.json();if(!response.ok)throw Error(data.error||'ZIP 导入失败');
+      if(data.requires_entry){
+        options($("project-entry-select"),data.entries.map(p=>[p,p]));$("project-upload-entry").classList.remove('hidden');
+        if(!$("project-import-dialog").open)$("project-import-dialog").showModal();return;
+      }
+      $("project-upload-entry").classList.add('hidden');if($("project-import-dialog").open)$("project-import-dialog").close();pendingProjectZip=null;$("project-zip-file").value='';
+      await refresh();await chooseProject(data.project.id);setView('editor');toast('ZIP 已解压，工程已导入');
+      if(data.preview_error)notice('工程已导入，PDF 暂未编译：'+data.preview_error);
+    }finally{uploadingProject=false;uploadStatus('');}
+  }
+  $("project-zip-file").addEventListener('change',handled(async()=>{pendingProjectZip=$("project-zip-file").files[0]||null;await uploadProjectZip();}));
+  $("project-entry-confirm").addEventListener('click',handled(()=>uploadProjectZip($("project-entry-select").value)));
   async function chooseProject(id) {
     if (window.paperEditorBeforeProjectChange && String(id) !== app.projectId) await window.paperEditorBeforeProjectChange();
     if (String(id) !== app.revisionRequestProject && $("task-input").value === app.loadedRevisionRequest) $("task-input").value = "";

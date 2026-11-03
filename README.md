@@ -42,3 +42,8 @@ Crossref 自动补充默认关闭。使用者自行同意发送公开课题关�
 
 第三方组件来源与许可见 `THIRD_PARTY_NOTICES.md` 和 `licenses/`。项目自身代码未在此包中额外指定开源许可证。
 翻译模型的来源与哈希见 `tools/translation/models/*/source_manifest.json`。
+
+
+### 上传自己的论文工程
+
+在“当前课题”或编辑器顶栏点击“上传 ZIP”，选择本地 LaTeX 工程压缩包（最大 64 MB，解压总量最大 256 MB、500 个文件）。系统自动解压、新建课题、识别主文件、展开 `\input` / `\include` 章节并编译 PDF。ZIP 中有多个入口时选择主 `.tex`；源文件使用 UTF-8 编码，图片和文献资源须包含在工程内。每次上传新建独立课题。

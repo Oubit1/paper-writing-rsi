@@ -31,6 +31,9 @@
       </a>
       <div class="project-switch">
         <label class="overline" for="project-select">当前课题</label>
+        <button type="button" class="project-zip-button" data-upload-project>上传 ZIP 创建课题</button>
+        <input id="project-zip-file" type="file" accept=".zip,application/zip" hidden aria-label="上传论文 ZIP 工程">
+        <p id="project-upload-status" role="status"></p>
         <div class="project-switch-row">
           <select id="project-select" aria-label="切换研究课题"><option value="">选择或创建课题</option></select>
           <button id="new-project" class="icon-button" title="创建课题" aria-label="创建课题">＋</button>
@@ -153,6 +156,7 @@
       <footer class="page-footer"><span>Paper Atelier</span><span>研究主线 · 可检验机制 · 可追溯写作</span></footer>
     </main>
   </div>
+  <dialog id="project-import-dialog" class="project-dialog"><h2>选择论文主文件</h2><div id="project-upload-entry" class="hidden"><label for="project-entry-select">ZIP 中存在多个完整 LaTeX 文件</label><select id="project-entry-select" aria-label="ZIP 主文件"></select><button type="button" id="project-entry-confirm" class="button primary">导入所选工程</button></div><button type="button" id="project-import-cancel" class="button secondary">取消</button></dialog>
   <dialog id="project-dialog" class="project-dialog">
     <form id="project-form">
       <div class="dialog-heading"><div><span class="eyebrow">A NEW LINE OF INQUIRY</span><h2>开始一个研究课题</h2></div><button type="button" id="close-project" class="icon-button" aria-label="关闭新建课题">×</button></div>

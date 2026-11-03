@@ -24,6 +24,7 @@ from .translation import TranslationAgents
 from .tex_preview import TexPreviewJobs
 from .source_agents import SourceWritingAgents
 from .discussion_context import read_discussion_context
+from .project_upload import import_project,MAX_ZIP
 
 
 def seed_project(store,library,root):
@@ -171,7 +172,7 @@ class Handler(BaseHTTPRequestHandler):
     def _host_ok(self):
         return self.headers.get("Host","").lower() in {f"127.0.0.1:{self.server.server_port}",f"localhost:{self.server.server_port}"}
 
-    def _write_ok(self):
+    def _write_ok(self, content_type="application/json"):
         if not self._host_ok():
             raise PermissionError("仅允许本机界面访问")
         origin=self.headers.get("Origin")
@@ -179,8 +180,8 @@ class Handler(BaseHTTPRequestHandler):
             raise PermissionError("请求来源不匹配")
         if self.headers.get("Sec-Fetch-Site")=="cross-site":
             raise PermissionError("不接受跨站写入")
-        if self.headers.get_content_type()!="application/json":
-            raise ValueError("写请求必须为 JSON")
+        if self.headers.get_content_type()!=content_type:
+            raise ValueError("请求内容类型不匹配")
 
     def do_GET(self):
         if not self._host_ok():
@@ -351,6 +352,19 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         try:
+            parts=urllib.parse.urlsplit(self.path)
+            if parts.path=="/api/projects/upload-zip":
+                self._write_ok("application/zip")
+                size=int(self.headers.get("Content-Length","0"))
+                if not 0<size<=MAX_ZIP:raise ValueError("ZIP 最大支持 64 MB")
+                raw=self.rfile.read(size)
+                if len(raw)!=size:raise ValueError("ZIP 上传不完整")
+                params=urllib.parse.parse_qs(parts.query)
+                result=import_project(self.app.root,self.app.store,self.app.source_review,raw,params.get('name',['导入的论文.zip'])[0],params.get('entry',[None])[0])
+                if result.get('project'):
+                    try:result['preview_job']=self.app.preview.submit(result['project']['id'],result['source']['hash'])
+                    except Exception as exc:result['preview_error']=str(exc)
+                return self._json(result,200 if result.get('requires_entry') else 201)
             self._write_ok()
             size=int(self.headers.get("Content-Length","0"))
             if not 0<size<=2*1024*1024:

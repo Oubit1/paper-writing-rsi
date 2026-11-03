@@ -1,4 +1,8 @@
 /* Keep the manuscript and active conversation prominent. */
+.project-zip-button { border:1px solid #b9cbb6;background:#eef5e9;color:#35513c;border-radius:7px;padding:8px 10px;cursor:pointer;white-space:nowrap; }
+.project-switch>.project-zip-button { width:100%;margin:8px 0; }
+#project-upload-status:empty { display:none; }
+#project-upload-entry select { max-width:100%;padding:8px;margin:10px 0; }
 [data-view="experience"], .composer .panel-title > .pill, .workflow-panel,
 .quiet-note, .team-help, .brand small, .sidebar-bottom > .small,
 .page-heading .eyebrow, .page-heading p, .page-footer, #task-help,

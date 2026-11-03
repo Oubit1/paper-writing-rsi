@@ -550,6 +550,19 @@ class SourceReviewStore:
             return None
         return proposal_id
 
+    def initialize_upload(self, pid, original_path, assets_path):
+        self._project(pid)
+        original=contained_path(self.root,str(original_path))
+        assets=contained_path(self.root,str(assets_path),directory=True)
+        tex=normalized(original.read_text(encoding='utf-8-sig'));validate_source(tex)
+        with self.store.lock,self.store.connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            if db.execute('SELECT 1 FROM source_documents WHERE project_id=?',(pid,)).fetchone():raise ManuscriptConflict('课题已有稿件，不能覆盖')
+            path=original.relative_to(self.root).as_posix();stamp=now()
+            db.execute('INSERT INTO source_documents VALUES(?,?,?,?,?,?,?,?,?)',(pid,tex,digest(tex),1,path,path,assets.relative_to(self.root).as_posix(),stamp,stamp))
+            self._version(db,pid,1,tex,'author_zip_upload','作者上传的 ZIP 工程；章节已展开为可审阅正文')
+        return self.get(pid)
+
     def prepare_review(self, pid, original_path, candidate_path, assets_path=None, expected_hash=None):
         self._project(pid)
         original = contained_path(self.root, original_path)
@@ -591,11 +604,12 @@ class SourceReviewStore:
         prefix = "/api/source/" + doc["project_id"]
         files = [dict(name="main.tex", kind="tex", editable=True, url=prefix + "/file?name=main.tex")]
         folder = contained_path(self.root, doc["assets_path"], directory=True)
-        for path in sorted(folder.iterdir(), key=lambda p: p.name.lower()):
+        for path in sorted(folder.rglob('*'), key=lambda p: p.as_posix().lower()):
             if not path.is_file() or path.suffix.lower() not in ASSET_EXTENSIONS or path.suffix.lower() == ".tex":
                 continue
-            files.append(dict(name=path.name, kind=path.suffix.lower().lstrip("."), editable=False,
-                              url=prefix + "/file?name=" + urllib.parse.quote(path.name)))
+            name=path.relative_to(folder).as_posix()
+            files.append(dict(name=name, kind=path.suffix.lower().lstrip("."), editable=False,
+                              url=prefix + "/file?name=" + urllib.parse.quote(name)))
         return files
 
     def _proposal(self, db, doc, pid):
@@ -1026,7 +1040,7 @@ class SourceReviewStore:
         if name == "main.tex":
             return dict(name=name, text=doc["tex"], sha256=doc["sha256"], editable=True)
         folder = contained_path(self.root, doc["assets_path"], directory=True)
-        if not isinstance(name, str) or name != Path(name).name or Path(name).suffix.lower() not in ASSET_EXTENSIONS:
+        if not isinstance(name, str) or '\\' in name or ':' in name or '..' in Path(name).parts or Path(name).is_absolute() or Path(name).suffix.lower() not in ASSET_EXTENSIONS:
             raise ValueError("工程文件不存在")
         path = (folder / name).resolve()
         if not path.is_relative_to(folder) or not path.is_file() or path.suffix.lower() == ".tex":
