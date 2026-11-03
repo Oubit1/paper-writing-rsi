@@ -1,0 +1,4 @@
+# Only needed when importing new PDF sources; controller/UI use the standard library.
+pypdf>=5,<7
+pdfplumber
+Pillow

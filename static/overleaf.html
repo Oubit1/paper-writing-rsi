@@ -1,0 +1,74 @@
+<div id="overleaf-workbench" class="ol-pdf-first">
+  <header class="ol-menubar">
+    <div class="ol-brand"><span>P</span><strong>PAPER ATELIER</strong><small>论文工作室</small></div>
+    <nav aria-label="工作室菜单"><button data-ol-view="workspace">协作</button><button data-ol-view="library">知识库</button><button data-ol-view="models">Agents 与模型</button></nav>
+    <select id="ol-project-select" aria-label="切换论文工程"></select><span class="ol-local">● 本地工程</span>
+  </header>
+  <div class="ol-actionbar">
+    <div class="ol-filepath">▤ <strong id="ol-file-title">main.tex</strong><span id="ol-file-status">当前稿 · 原文与已接受修改</span></div>
+    <span id="ol-save-status" role="status">正在连接…</span>
+    <button id="ol-source-toggle" class="ol-button" aria-expanded="false">显示源码</button>
+    <button id="ol-save" class="ol-button hidden">保存 <kbd>Ctrl S</kbd></button>
+    <button id="ol-download" class="ol-button">导出 .tex</button>
+    <button id="ol-review-toggle" class="ol-button ol-review-button">✦ 修订建议 <b id="ol-review-count">0</b></button>
+    <button id="ol-agent-toggle" class="ol-button">✧ Agents</button>
+  </div>
+  <div id="ol-notice" class="ol-notice hidden" role="alert"></div>
+  <div class="ol-workspace">
+    <aside class="ol-tree-panel">
+      <details id="ol-file-details" class="ol-file-details"><summary>工程文件与素材</summary><div class="ol-folder">⌄ 论文工程</div><nav id="ol-files" class="ol-files" aria-label="工程文件"></nav></details>
+      <div class="ol-outline-heading"><strong>文稿目录</strong><span>点击定位 PDF</span></div>
+      <nav id="ol-outline" class="ol-outline" aria-label="LaTeX 目录"></nav>
+      <nav id="ol-candidate-outline" class="ol-candidate-outline hidden" aria-label="Method 候选五节目录"></nav>
+      <div id="ol-provenance" class="ol-provenance"></div>
+    </aside>
+    <section class="ol-editor-panel">
+      <div class="ol-editor-toolbar"><div class="ol-tabs"><button id="ol-code-tab" class="active">Code</button><button id="ol-visual-tab" title="只读排版；修改请切换 Code">可视阅读</button></div><span id="ol-current-section">原文 / 当前稿</span><button id="ol-translate-selection" class="ol-link-button">划词翻译</button></div>
+      <div id="ol-code-area" class="ol-code-area"><div id="ol-gutter" class="ol-gutter" aria-label="源码行号与修改标记"></div><textarea id="ol-source" aria-label="LaTeX 源码" spellcheck="false" autocomplete="off" autocapitalize="off" wrap="off" placeholder="正在载入原版 LaTeX…"></textarea></div>
+      <article id="ol-visual" class="ol-visual hidden" aria-label="可视阅读"></article>
+      <div class="ol-editor-status"><span id="ol-cursor">Ln 1, Col 1</span><span id="ol-source-version">—</span><span>选中文字 → 翻译</span></div>
+    </section>
+    <section class="ol-pdf-panel">
+      <div class="ol-pdf-toolbar"><button id="ol-compile" class="ol-compile">⟳ 更新 PDF</button><span id="ol-compile-status" role="status">当前稿 PDF</span><span id="ol-pdf-issue-status" class="ol-pdf-issue-status"></span><a id="ol-pdf-download" class="ol-link-button hidden" target="_blank" rel="noopener">打开 ↗</a></div>
+      <div id="ol-structural-banner" class="ol-structural-banner hidden"><div><strong>Method 五节重构候选已就绪</strong><small id="ol-structural-banner-note">正文仍为当前已接受版本。</small></div><button id="ol-structural-open-pdf">查看完整候选 PDF</button><button id="ol-structural-open-review">逐节审阅 / 采纳</button></div>
+      <div id="ol-preview-banner" class="ol-preview-banner hidden"></div>
+      <div id="ol-preview-empty" class="ol-preview-empty"><div>▧</div><h2>原稿的真实编译预览</h2><p>点击 Recompile 编译当前稿。<br>未接受的建议不会进入正文或 PDF。</p></div>
+      <div id="ol-pdf-controls" class="ol-pdf-controls hidden"><button id="ol-page-prev" aria-label="上一页">‹</button><span id="ol-page-count">1 / 1</span><button id="ol-page-next" aria-label="下一页">›</button><button id="ol-zoom-out" aria-label="缩小">−</button><span id="ol-zoom">100%</span><button id="ol-zoom-in" aria-label="放大">＋</button><span>选中正文 → 翻译 / 讨论 / 修改</span></div>
+      <div id="ol-pdf-pages" class="ol-pdf-pages hidden" aria-label="当前稿 PDF"></div>
+      <iframe id="ol-pdf-fallback" class="ol-pdf hidden" title="当前稿 PDF 编译预览"></iframe>
+      <details id="ol-diagnostics" class="ol-diagnostics hidden"><summary>编译信息</summary><pre id="ol-diagnostics-text"></pre></details>
+      <form id="ol-pdf-prompt-form" class="ol-pdf-prompt"><div><span id="ol-prompt-scope">全文 / 当前章节</span><button type="button" id="ol-prompt-clear" class="hidden">清除选区</button><select id="ol-prompt-action" aria-label="PDF 指令处理方式"><option value="revise">局部修订</option><option value="discuss">讨论</option><option value="review">检查问题</option><option value="layout">图表 / 排版</option></select></div><div><textarea id="ol-pdf-prompt-input" aria-label="对选中文本或全文的指令" rows="1" placeholder="选中正文后说明怎么改；也可以直接讨论全文或要求调整图表排版。"></textarea><button type="submit" id="ol-pdf-prompt-send">发送给 Agent ↗</button></div></form>
+    </section>
+  </div>
+  <aside id="ol-agent-drawer" class="ol-agent-drawer hidden" aria-label="Agent 助手">
+    <header><div><span>WRITING AGENTS</span><h2>和论文专家一起修改</h2></div><button id="ol-agent-close" aria-label="关闭 Agent 面板">×</button></header>
+    <div class="ol-agent-tabs"><button data-agent-tab="review" class="active">修订建议</button><button data-agent-tab="discuss">讨论</button><button data-agent-tab="context">讨论资料</button><button data-agent-tab="translate">翻译</button></div>
+    <section id="ol-agent-context" class="hidden" aria-label="导入的讨论资料"></section>
+    <section id="ol-agent-review"><p class="ol-panel-note">每张卡片对应一个具体问题。点黄色标记查看该处细改；接受前不改原文。</p><div id="ol-proposals"></div></section>
+    <section id="ol-agent-discuss" class="hidden"><div class="ol-conversation-heading"><span>持续讨论 · 保留本轮上下文</span><button id="ol-new-conversation">新讨论</button></div><p class="ol-panel-note">基于当前稿和既定指引生成待审建议；接受前不改正文。</p><div id="ol-chat-selection" class="ol-chat-selection hidden"><header><strong id="ol-chat-selection-label">PDF 选区</strong><button id="ol-chat-selection-clear">清除 / 改用章节范围</button></header><p id="ol-chat-selection-text"></p></div><select id="ol-chat-role" aria-label="讨论专家"><option value="introduction">Introduction 专家</option><option value="method">Method 专家</option><option value="related_work">Related Work 专家</option><option value="experiments">实验叙述专家</option><option value="figures">科研绘图专家</option><option value="innovation_teacher">创新点教师</option><option value="global_teacher">全局教师</option><option value="reviewer">独立审稿</option><option value="calibration">格式与证据校准</option></select><div class="ol-agent-options"><select id="ol-chat-scope" aria-label="修改范围"><option value="document">全文</option></select><select id="ol-chat-action" aria-label="处理方式"><option value="revise">提出修改</option><option value="review">检查问题</option><option value="discuss">讨论思路</option><option value="sync">检查全文关联</option><option value="layout">图表 / 排版</option></select></div><div id="ol-chat-messages" class="ol-chat-messages"></div><form id="ol-chat-form"><textarea id="ol-chat-input" aria-label="给 Agent 的要求" placeholder="例如：按确定的 Introduction 大纲，先修改第二段，并说明修改理由。"></textarea><div class="ol-agent-send"><button type="button" id="ol-chat-cancel" class="ol-secondary hidden">停止任务</button><button type="submit" id="ol-chat-send" class="ol-primary">发送给专家 ↗</button></div></form></section>
+    <section id="ol-agent-translate" class="hidden"><p class="ol-panel-note">选中文字后默认使用离线快速翻译；只有点击“Agent 校订”才调用模型。译文独立展示，不写入稿件。</p><div id="ol-translation-history"></div></section>
+  </aside>
+  <aside id="ol-line-issues" class="ol-line-issues hidden" role="dialog" aria-label="本行修改问题"><header><strong id="ol-line-issues-title">本行问题</strong><button id="ol-line-issues-close" aria-label="关闭本行问题">×</button></header><div id="ol-line-issues-list"></div></aside>
+  <div id="ol-selection-bubble" class="ol-selection-bubble hidden"><button id="ol-selection-translate">翻译</button><button id="ol-selection-discuss">讨论</button><button id="ol-selection-revise">修改</button></div>
+  <aside id="ol-translation-popover" class="ol-translation-popover hidden" role="dialog" aria-label="划词翻译">
+    <header><div><strong>划词翻译</strong><small id="ol-translation-model">快速离线翻译 · 默认不调用 Agent</small></div><button id="ol-translation-close" aria-label="关闭翻译">×</button></header>
+    <div class="ol-translation-controls"><select id="ol-target-language" aria-label="翻译目标语言"><option value="zh-CN">译为中文</option><option value="en">译为英文</option></select><button id="ol-translation-retry" title="仅重试快速离线工具，不调用 GPT">重新快速翻译</button><button id="ol-translation-copy">复制译文</button><button id="ol-translation-refine" class="ol-translation-refine" title="仅点击此按钮后调用 Agent 校订">Agent 校订</button></div>
+    <div id="ol-translation-original" class="ol-translation-original"></div><p id="ol-translation-status" class="ol-translation-status" role="status"></p><div id="ol-translation-result" class="ol-translation-result" aria-live="polite"></div><dl id="ol-translation-terms" class="ol-translation-terms"></dl><p id="ol-translation-note" class="ol-panel-note"></p><button id="ol-translation-cancel" class="ol-link-button hidden">停止本次翻译</button>
+  </aside>
+  <dialog id="ol-review-dialog" class="ol-review-dialog">
+    <header><div><span>REVIEW BEFORE APPLYING</span><h2 id="ol-review-title">审阅修改建议</h2></div><button id="ol-review-close" aria-label="关闭修订审阅">×</button></header>
+    <nav id="ol-issue-nav" class="ol-issue-nav hidden" aria-label="问题导航"><button id="ol-issue-prev">← 上一个问题</button><span id="ol-issue-position"></span><button id="ol-locate-source">定位原文</button><button id="ol-issue-next">下一个问题 →</button></nav>
+    <p id="ol-review-reason" class="ol-review-reason"></p>
+    <p id="ol-structural-plan" class="ol-structural-plan hidden" role="status"></p>
+    <nav id="ol-structural-review-outline" class="ol-structural-review-outline hidden" aria-label="Method 结构单元"></nav>
+    <button id="ol-layout-preview" class="ol-layout-preview hidden">对比排版前后 PDF</button>
+    <section id="ol-local-context" class="ol-local-context hidden" aria-label="当前问题的上下文"><span class="ol-context-label">上下文 · 黑色原文只读</span><div id="ol-context-before" class="ol-context-before"></div><div id="ol-context-target" class="ol-context-target"></div><div id="ol-context-after" class="ol-context-after"></div></section>
+    <div class="ol-review-controls"><span>黑色：保留</span><span class="ol-insert">红色：新增</span><span class="ol-delete">蓝色：删除</span><button id="ol-select-all">选择全部待审项</button><button id="ol-select-none">取消选择</button></div>
+    <div id="ol-review-hunks" class="ol-review-hunks"></div>
+    <details id="ol-edit-proposal" class="ol-edit-proposal"><summary>手动调整整节建议的 LaTeX</summary><p>启用后，接受的是下方你手动调整的整节内容，独立于逐项勾选。</p><label><input id="ol-use-edited" type="checkbox">使用我编辑后的整节建议</label><textarea id="ol-edited-proposal" aria-label="编辑整节建议 LaTeX" spellcheck="false"></textarea></details>
+    <details id="ol-composed-preview" class="hidden"><summary>当前问题的已选细改预览 · 尚未写入正文</summary><textarea id="ol-composed-source" readonly aria-label="当前问题的局部预览"></textarea></details>
+    <p id="ol-review-error" class="ol-review-error" role="alert"></p>
+    <footer><span id="ol-review-selected">尚未选择修改</span><button id="ol-preview-selected" class="ol-secondary">预览已选改动</button><button id="ol-reject-selected" class="ol-secondary">暂不采用已选项</button><button id="ol-accept-selected" class="ol-primary">接受已选修改</button></footer>
+  </dialog>
+  <dialog id="ol-layout-dialog" class="ol-layout-dialog"><header><div><span id="ol-comparison-kind">排版对比 · 真实编译 PDF</span><h2 id="ol-layout-title">查看排版候选</h2></div><div class="ol-comparison-actions"><a id="ol-candidate-pdf-open" class="hidden" target="_blank" rel="noopener">单独阅读候选 PDF ↗</a><button id="ol-layout-close" aria-label="关闭候选对比">×</button></div></header><p id="ol-layout-status">正在编译独立候选…</p><nav id="ol-structural-pdf-outline" class="ol-structural-pdf-outline hidden" aria-label="候选 Method 五节"></nav><div class="ol-layout-pages"><button id="ol-layout-prev">← 上一页</button><span id="ol-layout-page">1 / 1</span><button id="ol-layout-next">下一页 →</button></div><div class="ol-layout-comparison"><section><h3>当前稿 · 已接受内容</h3><div id="ol-layout-before" class="ol-layout-pdf"></div></section><section><h3 id="ol-candidate-pdf-label">候选排版 · 尚未接受</h3><div id="ol-layout-after" class="ol-layout-pdf"></div></section></div><p id="ol-layout-error"></p><footer><span>预览不会修改正文；接受后更新当前稿并重新编译。</span><button id="ol-layout-accept" class="ol-primary" disabled>接受此排版</button></footer></dialog>
+</div>

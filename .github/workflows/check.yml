@@ -1,0 +1,17 @@
+name: Source checks
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m compileall -q app
+      - run: node --check static/app.js
+      - run: node --check static/section-pdf.js
+      - run: node tests/test_section_pdf.cjs

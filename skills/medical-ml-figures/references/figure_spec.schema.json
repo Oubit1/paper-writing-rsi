@@ -1,0 +1,257 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "concept",
+        "network",
+        "pgm",
+        "mechanism"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed_design",
+        "implemented",
+        "observed_result"
+      ]
+    },
+    "width": {
+      "type": "number",
+      "minimum": 240,
+      "maximum": 2400
+    },
+    "height": {
+      "type": "number",
+      "minimum": 240,
+      "maximum": 2400
+    },
+    "panels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+          },
+          "label": {
+            "type": "string"
+          },
+          "x": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2400
+          },
+          "y": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2400
+          },
+          "w": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2400
+          },
+          "h": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2400
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "x",
+          "y",
+          "w",
+          "h"
+        ]
+      },
+      "maxItems": 12
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "shape": {
+            "type": "string",
+            "enum": [
+              "box",
+              "circle",
+              "ellipse",
+              "plate",
+              "image_stack",
+              "field"
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "observed",
+              "latent",
+              "deterministic",
+              "prior",
+              "module",
+              "annotation"
+            ]
+          },
+          "color_role": {
+            "type": "string",
+            "enum": [
+              "observation",
+              "base",
+              "deviation",
+              "dynamics",
+              "output",
+              "neutral"
+            ]
+          },
+          "detail": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "source_locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "x": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2400
+          },
+          "y": {
+            "type": "number",
+            "minimum": 50,
+            "maximum": 2400
+          },
+          "w": {
+            "type": "number",
+            "minimum": 30,
+            "maximum": 2400
+          },
+          "h": {
+            "type": "number",
+            "minimum": 30,
+            "maximum": 2400
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "shape",
+          "kind",
+          "color_role",
+          "detail",
+          "source_locator",
+          "x",
+          "y",
+          "w",
+          "h"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 80
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "generation",
+              "inference",
+              "conditioning",
+              "comparison"
+            ]
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2400
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "maxItems": 12
+          },
+          "source_locator": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "source",
+          "target",
+          "kind",
+          "label",
+          "points",
+          "source_locator"
+        ]
+      },
+      "maxItems": 160
+    },
+    "caption": {
+      "type": "string"
+    },
+    "source_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "kind",
+    "status",
+    "width",
+    "height",
+    "panels",
+    "nodes",
+    "edges",
+    "caption",
+    "source_ids"
+  ]
+}

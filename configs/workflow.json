@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "max_rounds": 3,
+  "max_calls_per_run": 32,
+  "max_teacher_consultations_per_run": 3,
+  "max_parallel_roles": 3,
+  "max_concurrent_runs": 1,
+  "call_timeout_s": 900,
+  "formula_budget": {"target": 30, "warning_above": 33},
+  "default_provider": "codex",
+  "memory_scope": "project",
+  "experiment_execution": false
+}

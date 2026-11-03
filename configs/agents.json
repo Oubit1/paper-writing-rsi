@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "roles": [
+    {
+      "id": "introduction",
+      "name": "Introduction",
+      "kind": "writer",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "description": "研究动机、逐段中心句与完整引言写作",
+      "prompt_path": "agents/introduction.md"
+    },
+    {
+      "id": "method",
+      "name": "Method",
+      "kind": "writer",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "description": "任务建模、公式推导、定理边界与实现组织",
+      "prompt_path": "agents/method.md"
+    },
+    {
+      "id": "related_work",
+      "name": "Related Works",
+      "kind": "writer",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "description": "文献证据图谱、方法发展与差异定位",
+      "prompt_path": "agents/related_work.md"
+    },
+    {
+      "id": "experiments",
+      "name": "Experience / 实验设计",
+      "kind": "writer",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "description": "直接机制实验、结果组织和可行性设计",
+      "prompt_path": "agents/experiments.md"
+    },
+    {
+      "id": "figures",
+      "name": "科研绘图 / 网络与PGM",
+      "kind": "writer",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "description": "源论文风格对照；问题首图、网络架构、PGM和机制图，输出可编辑SVG/Draw.io与预览",
+      "prompt_path": "agents/figures.md"
+    },
+    {
+      "id": "experience",
+      "name": "经验维护",
+      "kind": "experience",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "description": "沉淀有来源、有限适用范围的项目经验候选",
+      "prompt_path": "agents/experience.md"
+    },
+    {
+      "id": "innovation_teacher",
+      "name": "创新点讨论",
+      "kind": "teacher",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "description": "质询贡献增量、替代解释及可证伪证据",
+      "prompt_path": "agents/innovation_teacher.md"
+    },
+    {
+      "id": "global_teacher",
+      "name": "全局讨论",
+      "kind": "teacher",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "description": "全局叙事监督，可对任意角色发出定向质询",
+      "prompt_path": "agents/global_teacher.md"
+    },
+    {
+      "id": "reviewer",
+      "name": "独立审稿",
+      "kind": "reviewer",
+      "model": "gpt-6.1-terra",
+      "effort": "high",
+      "description": "从审稿视角独立检查论证、方法和实验",
+      "prompt_path": "agents/reviewer.md"
+    },
+    {
+      "id": "calibration",
+      "name": "格式与证据校准",
+      "kind": "calibration",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "description": "目标期刊、引用、公式符号、交叉引用及语法",
+      "prompt_path": "agents/calibration.md"
+    },
+    {
+      "id": "translator",
+      "name": "划词翻译",
+      "kind": "utility",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "description": "仅在显式点击Agent校订时进行上下文学术翻译；默认快译使用本地工具，不改正文",
+      "prompt_path": "agents/translator.md"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "katex",
+  "version": "0.19.1",
+  "source": "https://registry.npmjs.org/katex/0.19.1",
+  "tarball": "https://registry.npmjs.org/katex/-/katex-0.19.1.tgz",
+  "integrity": "sha512-jG8uKntjSEcm2EpQOh0XturpPuuC9r3Sq5HLHdsFdWZT27E672SF19QEi+of0/YeOy15lDgRhKvr5614uRrEfA==",
+  "license": "MIT",
+  "retrieved": "2026-10-30",
+  "files": 84,
+  "runtime_network": "none; local vendor assets only"
+}

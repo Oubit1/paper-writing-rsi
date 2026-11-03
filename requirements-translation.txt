@@ -1,0 +1,4 @@
+# Optional local quick-translation runtime. No online translation API is used.
+# Install into the project .venv; the existing PDF dependencies remain available.
+ctranslate2==4.8.0
+sentencepiece==0.2.1

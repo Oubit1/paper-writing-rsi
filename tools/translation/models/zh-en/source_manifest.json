@@ -1,0 +1,24 @@
+{
+  "source_url": "https://data.argosopentech.com/argospm/v1/translate-zh_en-1_9.argosmodel",
+  "index_url": "https://github.com/argosopentech/argospm-index",
+  "package_sha256": "62e7af5a3a48b530e47b7b3e5c78c2de79073ecd815750d2bf3ab35b4a67da2d",
+  "package_bytes": 74481402,
+  "metadata": {
+    "package_version": "1.9",
+    "argos_version": "1.9.0",
+    "from_code": "zh",
+    "from_name": "Chinese",
+    "to_code": "en",
+    "to_name": "English"
+  },
+  "model_dir": "tools/translation/models/zh-en",
+  "files": {
+    "metadata.json": "e42259bbbec6cd09ecd16d97d614bebbf1e7351130c6970fe77a2f1ed7f99cca",
+    "README.md": "1bb7a1261520b8f7d1f94b7fd108c0ccfd7333a3e40a2256df274df0a2ff1cc8",
+    "sentencepiece.model": "72600ea476b3e3b76763919c3a30ef5104d9b473b19567d45251f56034264f54",
+    "model/config.json": "b28e3136fc7a103e29585c10c8124849fb01d649531f58e00cbe240111560cd7",
+    "model/model.bin": "edd8c8a6863d36959613ff291074627a1635fab2f51b872ef437e924d238921a",
+    "model/shared_vocabulary.json": "c980413009e8041fc42c81730ad4b72ab6cb1313b3b89b1ced261fe5e177b024"
+  },
+  "license_note": "Preserve package notices; do not infer model license from Argos code license."
+}

@@ -1,0 +1,23 @@
+{
+  "backend": "ctranslate2",
+  "compute_type": "int8",
+  "intra_threads": 4,
+  "beam_size": 1,
+  "prewarm": true,
+  "models": [
+    {
+      "source_language": "en",
+      "target_language": "zh-CN",
+      "model_dir": "tools/translation/models/en-zh/model",
+      "tokenizer_path": "tools/translation/models/en-zh/sentencepiece.model",
+      "model_version": "argos-opus-en-zh-1.9-int8"
+    },
+    {
+      "source_language": "zh-CN",
+      "target_language": "en",
+      "model_dir": "tools/translation/models/zh-en/model",
+      "tokenizer_path": "tools/translation/models/zh-en/sentencepiece.model",
+      "model_version": "argos-opus-zh-en-1.9-int8"
+    }
+  ]
+}

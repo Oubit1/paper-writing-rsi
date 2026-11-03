@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Paper Atelier · 科研写作工作台</title>
+  <link rel="stylesheet" href="/static/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/editor.css?v=20261030-click2">
+  <link rel="stylesheet" href="/static/vendor/pdfjs/pdf_viewer.css">
+  <link rel="stylesheet" href="/static/overleaf.css?v=20261031-fast-translation">
+  <link rel="stylesheet" href="/static/lssm-context.css?v=20261102-context">
+  <link rel="stylesheet" href="/static/refinements.css?v=20261103">
+  <script src="/static/vendor/katex/katex.min.js" defer></script>
+  <script src="/static/vendor/katex/contrib/auto-render.min.js" defer></script>
+  <script src="/static/section-pdf.js?v=20261103" defer></script>
+  <script src="/static/app.js?v=20261103-pdf" defer></script>
+  <script src="/static/editor.js?v=20261030-click2" defer></script>
+  <script src="/static/pdf_annotations.js?v=20261030-pdf" defer></script>
+  <script src="/static/overleaf.js?v=20261102-context" defer></script>
+  <script src="/static/lssm-context.js?v=20261102-context" defer></script>
+</head>
+<body data-writing-editor="source-review">
+  <a class="skip-link" href="#main">跳到工作区</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="项目导航">
+      <a class="brand" href="/" aria-label="Paper Atelier 首页">
+        <span class="brand-mark" aria-hidden="true">P<span>·</span></span>
+        <span><strong>Paper Atelier</strong><small>你的科研写作工作室</small></span>
+      </a>
+      <div class="project-switch">
+        <label class="overline" for="project-select">当前课题</label>
+        <div class="project-switch-row">
+          <select id="project-select" aria-label="切换研究课题"><option value="">选择或创建课题</option></select>
+          <button id="new-project" class="icon-button" title="创建课题" aria-label="创建课题">＋</button>
+        </div>
+      </div>
+      <nav class="main-nav" aria-label="工作区">
+        <button class="nav-item active" data-view="editor"><span class="nav-icon" aria-hidden="true">▧</span>论文编辑器</button>
+        <button class="nav-item" data-view="workspace"><span class="nav-icon" aria-hidden="true">◫</span>协作与任务</button>
+        <button class="nav-item" data-view="library"><span class="nav-icon" aria-hidden="true">▤</span>论文与知识库<span id="library-badge" class="nav-count"></span></button>
+        <button class="nav-item" data-view="experience"><span class="nav-icon" aria-hidden="true">↗</span>经验与演化</button>
+        <button class="nav-item" data-view="models"><span class="nav-icon" aria-hidden="true">⚙</span>角色与模型</button>
+      </nav>
+      <div class="team-heading"><span class="overline">写作团队</span><span class="team-help">点击直接讨论</span></div>
+      <div id="role-list" class="role-list"><p class="muted small loading-text">正在连接工作台…</p></div>
+      <div class="sidebar-bottom">
+        <div class="connection"><span id="connection-dot" class="status-dot"></span><span id="connection-text">正在连接本地服务</span></div>
+        <span class="small muted">本地工作区 · D:\paper_agent</span>
+      </div>
+    </aside>
+
+    <main id="main" class="main">
+      <header class="topbar">
+        <div class="breadcrumb"><span>WORKSPACE</span><i>/</i><strong id="header-project">科研写作工作台</strong></div>
+        <div class="topbar-actions"><span id="provider-status" class="pill neutral">检查 GPT 连接</span><button id="refresh" class="button subtle small-button" aria-label="刷新工作台">刷新</button></div>
+      </header>
+      <div id="notice" class="notice hidden" role="alert"><span id="notice-text"></span><button id="notice-close" aria-label="关闭提示">×</button></div>
+
+      <section id="view-editor" class="view view-editor">
+        <div class="manuscript-workbench">
+          <header class="editor-toolbar"><div class="editor-title"><strong>论文工作稿</strong><span id="editor-version">正在读取…</span></div><div class="editor-toolbar-actions"><span id="editor-save-status" role="status">未修改</span><button id="editor-copy" class="button subtle small-button">复制 LaTeX</button><button id="editor-export" class="button secondary small-button">导出 .tex</button><button id="editor-export-tracked" class="button secondary small-button">带修订导出</button></div></header>
+          <div class="editor-layout"><aside class="editor-outline"><div class="editor-outline-heading"><strong>文稿目录</strong><button id="editor-reload" title="刷新文稿" aria-label="刷新文稿">↻</button></div><nav id="editor-sections" aria-label="章节目录"></nav><div id="editor-provenance" class="editor-provenance"></div><label class="editor-auto-review"><input id="editor-auto-review" type="checkbox"><span>自动专家检查</span></label><p id="editor-auto-note" class="editor-help">进入章节后检查一次，建议不会自动覆盖正文。</p><div class="editor-legend"><span class="editor-legend-dot"></span>点击“查看修改建议”打开原因和差异；点击正文可直接编辑。</div></aside>
+          <div class="editor-canvas" id="editor-canvas"><div id="editor-notice" class="editor-notice hidden" role="alert"></div><article id="editor-paper" class="editor-paper"><div class="editor-empty">正在载入可编辑文稿…</div></article></div></div>
+          <section class="editor-chat"><div class="editor-chat-top"><strong>和本节专家一起修改</strong><span id="editor-selection">未选择章节</span><button id="editor-review" class="button subtle small-button">检查本节</button></div><form id="editor-command-form"><label class="sr-only" for="editor-command">修改要求</label><textarea id="editor-command" rows="2" placeholder="直接说明要改什么。例如：这段还没有承接上一段的任务困难，请保持现有方法不变，重写过渡。"></textarea><div class="editor-chat-controls"><select id="editor-action" aria-label="处理方式"><option value="revise">提出修改方案</option><option value="review">解释并检查问题</option><option value="sync">检查关联内容</option></select><select id="editor-scope" aria-label="修改范围"><option value="section">当前章节</option><option value="block">选中段落 / 公式</option></select><label id="editor-auto-apply-label" class="editor-auto-apply hidden"><input id="editor-auto-apply" type="checkbox">自动应用已核查的关联文字修改</label><span id="editor-command-policy" class="editor-command-policy">生成建议，采纳后更新稿件</span><button id="editor-send" class="button primary" type="submit">发送给专家 ↗</button></div></form><div id="editor-jobs" class="editor-jobs" aria-live="polite"></div></section>
+        </div>
+      </section>
+      <section id="view-workspace" class="view hidden">
+        <div class="page-heading">
+          <div><span class="eyebrow">FROM QUESTION TO MANUSCRIPT</span><h1>把研究思路，写成有说服力的论文。</h1><p>分工撰写，教师质询，独立审稿。让每一项主张都有对应的依据。</p></div>
+          <button id="show-new-project" class="button secondary">＋ 新建课题</button>
+        </div>
+        <div class="workspace-grid">
+          <div class="work-column">
+            <section class="panel composer">
+              <div class="panel-title"><h2>这一轮，推进什么？</h2><span class="pill accent">写作 RSI</span></div>
+              <div class="mode-tabs" role="tablist" aria-label="任务类型">
+                <button id="mode-revision" class="mode-tab" data-mode="revision" role="tab" aria-selected="false">按既定方案改稿</button>
+                <button id="mode-full" class="mode-tab active" data-mode="full" role="tab" aria-selected="true">整篇协作</button>
+                <button id="mode-section" class="mode-tab" data-mode="section" role="tab" aria-selected="false">定向优化</button>
+                <button id="mode-discuss" class="mode-tab" data-mode="discuss" role="tab" aria-selected="false">与老师 / 角色讨论</button>
+              </div>
+              <div id="revision-binding" class="revision-binding hidden" aria-label="稿件与修改指引绑定">
+                <div class="revision-heading"><strong>当前稿件与已确定方案</strong><span class="pill accent">固定改稿基线</span></div>
+                <p id="revision-manuscript"></p><div id="revision-guides" class="revision-guides"></div>
+                <p id="revision-targets" class="field-help"></p><p id="revision-principle" class="revision-principle"></p>
+                <button id="load-revision-task" class="button secondary small-button" type="button">载入本轮改稿任务 ↗</button>
+              </div>
+              <div id="target-role-row" class="field hidden"><label for="target-role">交给哪位角色</label><select id="target-role"></select></div>
+              <label class="sr-only" for="task-input">研究方向或写作要求</label>
+              <textarea id="task-input" rows="6" placeholder="描述研究方向、需要优化的段落，或向老师提出一个问题。&#10;&#10;例如：围绕当前任务，先明确可检验的技术问题，再梳理 Introduction 与 Method 的对应关系。"></textarea>
+              <p id="task-help" class="field-help">将按当前课题背景组织写作；缺失数据或实验依据会明确标记，不补造结果。</p>
+              <div class="composer-options">
+                <div class="compact-field"><label for="provider-select">运行方式</label><select id="provider-select"><option value="codex">GPT · 真实运行</option><option value="mock">离线演示 · 不调用模型</option></select></div>
+                <div class="compact-field" id="rounds-field"><label for="rounds-select">讨论轮次</label><select id="rounds-select"><option value="1">1 轮 · 初稿与审阅</option><option value="2">2 轮 · 反馈后修订</option><option value="3">3 轮 · 充分讨论</option></select></div>
+              </div>
+              <div class="composer-footer"><span id="run-estimate" class="small muted">仅点击运行后才会调用模型。</span><button id="start-run" class="button primary"><span>开始协作</span><span aria-hidden="true">↗</span></button></div>
+            </section>
+            <section class="panel workflow-panel">
+              <div class="panel-title"><h2>协作路径</h2><span class="small muted">各角色保留独立讨论记录</span></div>
+              <div class="flow-track">
+                <div class="flow-step"><span>01</span><strong>明确问题</strong><small>原稿 · 方案 · 研究主线</small></div>
+                <i aria-hidden="true">→</i><div class="flow-step"><span>02</span><strong>分工写作</strong><small>叙事 · 推导 · 文献 · 绘图</small></div>
+                <i aria-hidden="true">→</i><div class="flow-step"><span>03</span><strong>质询与修订</strong><small>创新教师 · 审稿 · 校准</small></div>
+                <i aria-hidden="true">→</i><div class="flow-step"><span>04</span><strong>沉淀经验</strong><small>保留证据与版本</small></div>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-title"><h2>运行记录</h2><span id="run-count" class="small muted"></span></div>
+              <div id="run-list" class="run-list"><div class="empty compact">创建课题后，协作记录会保存在这里。</div></div>
+            </section>
+          </div>
+          <aside class="context-column">
+            <section class="panel project-context">
+              <div class="panel-title"><h2>课题背景</h2><span class="tiny-label">PROJECT BRIEF</span></div>
+              <h3 id="context-name">还没有选择课题</h3><p id="context-task" class="context-task">可以从一个研究方向开始，也可以接着已有稿件进行定向修改。</p>
+              <div class="context-meta"><span class="small muted">目标期刊</span><strong id="context-journal">未设定</strong></div>
+            </section>
+            <section class="panel live-panel">
+              <div class="panel-title"><h2>当前进展</h2><span id="live-status" class="pill neutral">等待任务</span></div>
+              <div id="live-content" class="live-content"><div class="live-empty"><span class="orbit" aria-hidden="true">✧</span><p>一个清楚的问题，<br>是好论文的起点。</p></div></div>
+              <button id="cancel-run" class="button danger hidden">停止本轮运行</button>
+            </section>
+            <div class="quiet-note"><span aria-hidden="true">○</span><p>教师意见是可讨论的研究建议。理论条件、文献依据和实验结果需分别核验。</p></div>
+          </aside>
+        </div>
+        <section class="panel output-panel">
+          <div class="panel-title output-title"><div><h2>文稿与讨论</h2><p class="small muted">同一课题的章节版本与角色交流，集中保留。</p></div><div class="segmented"><button id="tab-artifacts" class="active" data-output="artifacts">文稿版本</button><button id="tab-messages" data-output="messages">讨论记录</button></div></div>
+          <div id="artifacts-pane" class="artifact-layout"><div id="artifact-list" class="artifact-list"><div class="empty compact">尚无文稿版本</div></div><article class="document-pane"><div id="document-toolbar" class="document-toolbar hidden"><span id="document-label"></span><div><button id="copy-artifact" class="button subtle small-button">复制</button><button id="download-artifact" class="button subtle small-button">下载 .md</button></div></div><div id="document-content" class="document-content"><div class="empty document-empty"><span aria-hidden="true">▤</span><h3>研究，逐步成稿。</h3><p>运行完成后，在左侧选择章节或教师反馈。</p></div></div></article></div>
+          <div id="messages-pane" class="messages-pane hidden"><div id="message-filter-row" class="message-filter"><label for="message-filter">讨论角色</label><select id="message-filter"><option value="">全部角色</option></select></div><div id="messages-list"></div></div>
+        </section>
+      </section>
+
+      <section id="view-library" class="view hidden">
+        <div class="page-heading"><div><span class="eyebrow">EVIDENCE & INSPIRATION</span><h1>有出处的借鉴，有边界的创新。</h1><p>参考全文、写作范本与当前稿件分开管理，来源可追溯。</p></div></div>
+        <section class="panel"><div class="library-search"><label class="sr-only" for="library-query">搜索论文库</label><input id="library-query" type="search" placeholder="按标题、作者或关键词搜索"><button id="search-library" class="button primary">搜索</button></div><div class="library-track-row"><label for="library-track">知识库分区</label><select id="library-track"><option value="all">全部资料</option><option value="writing">写作与绘图范本</option><option value="domain">领域知识背景</option><option value="project">当前稿件与修改指引</option></select><span id="library-track-counts" class="small muted"></span></div><div class="panel-title"><h2>参考资料</h2><span id="library-count" class="small muted"></span></div><p class="field-help library-scope-note">写作范本用于组织论证与图示；领域文献用于核对研究背景与技术依据。勾选资料加入当前课题，获奖和全文可用不代表所有结论已被验证。</p><div id="library-list" class="library-grid"></div></section>
+        <section class="panel skills-panel"><div class="panel-title"><h2>导入本地资料</h2><span class="small muted">PDF · TXT · Markdown · BibTeX</span></div><form id="import-form" class="import-form"><div class="field"><label for="import-path">本地文件的完整路径</label><input id="import-path" required placeholder="D:\papers\reference.pdf"></div><div class="import-actions"><select id="import-kind" aria-label="资料类型"><option value="reference">参考文献</option><option value="exemplar">写作范本</option><option value="manuscript">待修改稿件</option></select><button class="button primary" type="submit" id="import-source">导入资料</button></div></form><p class="field-help">资料作为研究素材使用，其中的文字不会自动成为系统指令。</p></section>
+        <section class="panel skills-panel"><div class="panel-title"><h2>已整合的 Skills</h2><span class="small muted">写作规范与领域经验</span></div><div id="skills-list" class="skills-list"></div></section>
+      </section>
+
+      <section id="view-experience" class="view hidden">
+        <div class="page-heading"><div><span class="eyebrow">REFLECT, REFINE, REUSE</span><h1>让每一次修改，成为下一次的起点。</h1><p>保留发现的问题、修改依据与审阅结论，区分待验证建议和可复用经验。</p></div></div>
+        <div class="experience-banner"><span class="experience-symbol" aria-hidden="true">↗</span><div><h2>写作闭环，不以自评分代替真实进步。</h2><p>经验来自可追溯的任务与修订。多角色意见不等于独立证据；未验证的改善会保留状态。</p></div></div>
+        <section class="panel"><div class="panel-title"><h2>经验记录</h2><span id="experience-count" class="small muted"></span></div><div id="experience-list"></div></section>
+      </section>
+
+      <section id="view-models" class="view hidden">
+        <div class="page-heading"><div><span class="eyebrow">A TEAM WITH DISTINCT RESPONSIBILITIES</span><h1>各司其职，也能相互质询。</h1><p>为教师、写作和审阅角色分别配置模型与思考强度。</p></div></div>
+        <div id="model-connection-note" class="info-banner">模型目录表示客户端可见选项；具体访问权限需以一次真实调用的结果为准。</div>
+        <div id="models-list" class="models-grid"></div>
+      </section>
+      <footer class="page-footer"><span>Paper Atelier</span><span>研究主线 · 可检验机制 · 可追溯写作</span></footer>
+    </main>
+  </div>
+  <dialog id="project-dialog" class="project-dialog">
+    <form id="project-form">
+      <div class="dialog-heading"><div><span class="eyebrow">A NEW LINE OF INQUIRY</span><h2>开始一个研究课题</h2></div><button type="button" id="close-project" class="icon-button" aria-label="关闭新建课题">×</button></div>
+      <div class="field"><label for="project-name">课题名称 <span class="required">*</span></label><input id="project-name" name="name" required maxlength="160" placeholder="给这项研究一个简短的名字"></div>
+      <div class="field"><label for="project-task">研究方向与已有基础</label><textarea id="project-task" name="task" rows="5" placeholder="希望研究什么问题？已有何种方法、材料或实验？也可以先留空，进入工作台与教师讨论。"></textarea></div>
+      <div class="field"><label for="project-journal">目标期刊 / 会议 <span class="muted normal">(可选)</span></label><input id="project-journal" name="target_journal" maxlength="160" placeholder="例如 IEEE TMI、Medical Image Analysis"></div>
+      <p class="field-help">创建课题会保存本地项目，不会自动发起模型调用。</p><div class="dialog-footer"><button type="button" id="cancel-project" class="button secondary">取消</button><button id="create-project" class="button primary" type="submit">创建课题 ↗</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast hidden" role="status"></div>
+  <dialog id="editor-source-dialog" class="editor-dialog"><div class="editor-dialog-heading"><div><span class="eyebrow">LATEX SOURCE</span><h2 id="editor-source-title">编辑公式</h2></div><button type="button" id="editor-source-close" class="icon-button" aria-label="关闭公式编辑">×</button></div><label class="editor-help" for="editor-source-input">修改实际 LaTeX 源码，预览即时更新。</label><textarea id="editor-source-input" rows="7" spellcheck="false"></textarea><div id="editor-source-preview" class="editor-source-preview"></div><p id="editor-source-error" class="editor-help"></p><div class="editor-dialog-footer"><button id="editor-source-cancel" class="button secondary">取消</button><button id="editor-source-save" class="button primary">保存修改</button></div></dialog>
+  <dialog id="editor-suggestion-dialog" class="editor-dialog editor-suggestion-dialog"><div class="editor-dialog-heading"><div><span class="eyebrow">REVIEW & REVISION</span><h2>这一处为什么需要修改？</h2></div><button id="editor-suggestion-close" class="icon-button" aria-label="关闭修改建议">×</button></div><div id="editor-suggestion-meta" class="editor-suggestion-meta"></div><p id="editor-suggestion-reason" class="editor-suggestion-reason"></p><div class="editor-diff-legend"><span>黑色：保留内容</span><span class="editor-insert">红色：新增</span><span class="editor-delete">蓝色：删除</span></div><div id="editor-suggestion-diff" class="editor-suggestion-diff"></div><details id="editor-suggestion-evidence"><summary>依据与来源</summary><div id="editor-suggestion-evidence-body"></div></details><button id="editor-edit-proposal" class="button subtle small-button">编辑建议的 LaTeX</button><div id="editor-proposal-edit" class="hidden"><textarea id="editor-proposal-input" rows="6" spellcheck="false"></textarea><div id="editor-proposal-preview" class="editor-source-preview"></div></div><div id="editor-suggestion-error" class="editor-help" role="alert"></div><button id="editor-suggestion-retry" class="button secondary small-button hidden" type="button">重试读取</button><div class="editor-dialog-footer"><button id="editor-suggestion-reject" class="button secondary">暂不采用</button><button id="editor-suggestion-accept" class="button primary">接受修改</button></div></dialog>
+</body>
+</html>
