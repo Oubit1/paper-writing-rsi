@@ -111,6 +111,7 @@ class Workflow:
             raise Cancelled()
 
     def _role_prompt(self,role):
+        from .writing_tips import writing_tips_context
         parts=[]
         paths=[self.root/"skills/personal-research-writing/SKILL.md",
                self.root/"skills/oral-paper-skill/SKILL.md"]
@@ -131,6 +132,7 @@ class Workflow:
                     # Project-specific suggestions live in the accepted seed, not a universal rule.
                     text=text.split("## BioWorld的检查建议")[0]
                 parts.append(text)
+        parts.append(writing_tips_context(self.root,role['id'])['text'])
         return "\n\n".join(parts)
 
     def _snapshot(self,run):

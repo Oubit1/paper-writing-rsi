@@ -7,3 +7,6 @@
 - Python packages are installed separately by pip from requirements files, with their own distribution notices. Codex and Python themselves are not bundled.
 
 No private paper corpus, author's personal writing exemplars or vendor repository snapshot is redistributed.
+
+
+MLNLP-World/Paper-Writing-Tips: https://github.com/MLNLP-World/Paper-Writing-Tips . No LICENSE file observed at pinned commit 50712564062249b28b8493ebdc35f8b3a3b88512. Upstream text is not included in this source repository; the installer fetches the four Markdown files directly from the pinned upstream and verifies SHA256. Local adaptation policy and integration code are separate.

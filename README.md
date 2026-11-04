@@ -47,3 +47,8 @@ Crossref 自动补充默认关闭。使用者自行同意发送公开课题关�
 ### 上传自己的论文工程
 
 在“当前课题”或编辑器顶栏点击“上传 ZIP”，选择本地 LaTeX 工程压缩包（最大 64 MB，解压总量最大 256 MB、500 个文件）。系统自动解压、新建课题、识别主文件、展开 `\input` / `\include` 章节并编译 PDF。ZIP 中有多个入口时选择主 `.tex`；源文件使用 UTF-8 编码，图片和文献资源须包含在工程内。每次上传新建独立课题。
+
+
+### MLNLP 写作检查 Skill
+
+已接入 [Paper-Writing-Tips](https://github.com/MLNLP-World/Paper-Writing-Tips) 的 paper-writing Skill，用于章节写作、PDF 局部修订和独立审阅/校准。运行 Install.ps1 时从固定上游版本下载并核验；也可运行 `python scripts/install_paper_writing_skill.py` 单独安装。社区建议按模板与当前作者要求适用，修改仍待作者接受。详见 [接入与验证说明](docs/WRITING_SKILLS.md)。

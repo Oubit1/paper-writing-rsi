@@ -1,0 +1,12 @@
+{
+  "repository": "MLNLP-World/Paper-Writing-Tips",
+  "commit": "50712564062249b28b8493ebdc35f8b3a3b88512",
+  "path": "paper-writing",
+  "license": "No LICENSE file observed in pinned repository; fetch from upstream, do not redistribute its text.",
+  "files": {
+    "SKILL.md": "89960b11acd3a5fffdf8583b374396b33d1398989c43173d466e2b2b9c279ec0",
+    "references/writing-rules.md": "8df915eef04d9e555cf53dfd0aeb584a5680dedb3275ed8c5cb3ffbd0e555ea4",
+    "references/final-checklist.md": "bf3489c3926e1993fe350a1efbb9071683fa2262b6c626f2040529ccc6822cd5",
+    "references/resources.md": "1ee2042197216be92f2d86296905580ce8e4690757a0d183d09cc2c3f538dab8"
+  }
+}

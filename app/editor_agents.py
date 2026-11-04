@@ -261,9 +261,11 @@ class EditorAgents:
         return '\n\n'.join(chunks)
 
     def _context(self,job,doc,blocks,allowed,role,instruction):
+        from .writing_tips import writing_tips_context
         chunks=[]
         for p in (self.root/'skills/personal-research-writing/SKILL.md',self.root/'agents/_shared.md',self.root/role['prompt_path']):
             if p.exists():chunks.append(p.read_text(encoding='utf-8-sig'))
+        chunks.append(writing_tips_context(self.root,role['id'],job['action'])['text'])
         plan=self.revision_plan.load(job['project_id']) if self.revision_plan else None
         if plan:chunks.append(self._guide_context(job,role['id'],plan))
         project=self.store.project(job['project_id']) or {}

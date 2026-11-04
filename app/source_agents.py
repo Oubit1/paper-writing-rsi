@@ -13,6 +13,7 @@ from .source_selection import map_selection, map_layout_selection
 from .source_context import bound_guide_context, GuideContextError
 from .discussion_context import discussion_prompt
 from .rule_memory import collect_rules, audit_rules
+from .writing_tips import writing_tips_context
 
 
 def _object(properties):
@@ -303,6 +304,12 @@ class SourceWritingAgents:
                 budget = bound_context["budget"]
                 budget["chars_included"] = budget.get("chars_included", 0) + consumed
                 budget["remaining_chars"] = remaining - consumed
+        tips = writing_tips_context(self.root, role_id, action) if not bound_context['error'] else {'text': '', 'sources': []}
+        bound_context['writing_tips'] = tips['text']
+        bound_context['sources'].extend(tips['sources'])
+        # Author-guide budgets stay reserved for author inputs. Community style
+        # guidance has its own bounded allowance and participates in cache keys.
+        bound_context['budget']['supplemental_skill_chars'] = sum(s['chars_read'] for s in tips['sources'])
         fingerprint = digest(json.dumps(
             [CONTRACT_VERSION, pid, state["hash"], scope, message, action, role_id, role["model"], role["effort"],
              selection, conversation_id, trigger, digest(json.dumps(bound_context, ensure_ascii=False, sort_keys=True))],
@@ -390,7 +397,7 @@ class SourceWritingAgents:
                           if target.get("selection_text") else
                           (area.get("start", 0) >= target["start"] and area.get("end", len(state["tex"])) <= target["end"]))]
             prompt = "\n\n".join([
-                guide, "当前课题已绑定指南（已核验，范围和读取边界见清单）：\n" + bound_context["text"],
+                guide, bound_context.get('writing_tips', ''), "当前课题已绑定指南（已核验，范围和读取边界见清单）：\n" + bound_context["text"],
                 "GUIDANCE SOURCE MANIFEST — chars_read means prompt inclusion, not evidence of comprehension:\n" +
                 json.dumps(bound_context["sources"], ensure_ascii=False),
                 "GUIDANCE CONTEXT BUDGET:\n" + json.dumps(bound_context["budget"], ensure_ascii=False),

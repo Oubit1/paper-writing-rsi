@@ -17,3 +17,4 @@ jobs:
       - run: node tests/test_section_pdf.cjs
       - run: python -m unittest discover -s tests -p test_project_upload.py -v
       - run: python -m unittest discover -s tests -p test_tex_preview.py -v
+      - run: python -m unittest discover -s tests -p test_writing_tips.py -v

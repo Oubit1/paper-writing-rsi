@@ -14,4 +14,6 @@ if($LASTEXITCODE -ne 0){throw 'Dependency installation failed. Check your connec
 if($LASTEXITCODE -ne 0){throw 'Dependency check failed.'}
 & $localPython scripts/download_runtime.py
 if($LASTEXITCODE -ne 0){throw 'Runtime download failed. Check your connection and retry.'}
+& $localPython scripts/install_paper_writing_skill.py
+if($LASTEXITCODE -ne 0){throw 'Writing skill installation failed. Check your connection and retry.'}
 Write-Host 'Ready. Sign in to your own Codex installation, then run Start.ps1.'

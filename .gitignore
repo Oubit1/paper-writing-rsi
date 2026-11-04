@@ -16,3 +16,6 @@ tools/**/*.model
 tools/**/shared_vocabulary.json
 *.zip
 *.sqlite*
+
+# Downloaded third-party skill; fetched from pinned upstream at installation.
+skills/paper-writing/
