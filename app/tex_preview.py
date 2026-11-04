@@ -144,19 +144,7 @@ class TexPreviewJobs:
                 assets = assets.resolve()
                 if not assets.is_relative_to(self.root) or not assets.is_dir():
                     raise ValueError("预览素材必须位于论文工作区内。")
-                count = 0
-                for item in assets.rglob("*"):
-                    if not item.is_file() or item.suffix.lower() not in ASSET_SUFFIXES:
-                        continue
-                    resolved = item.resolve()
-                    if not resolved.is_relative_to(assets):
-                        raise ValueError("素材不能通过链接读取工程目录以外的内容。")
-                    count += 1
-                    if count > 500 or item.stat().st_size > 100_000_000:
-                        raise ValueError("预览素材数量或单文件过大。")
-                    destination = folder / item.relative_to(assets)
-                    destination.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(item, destination)
+                self._copy_assets(pid, assets, folder)
             (folder / "main.tex").write_text(state["tex"], encoding="utf-8", newline="\n")
             stamp = now()
             self.store.execute("INSERT INTO tex_preview_jobs (id,project_id,source_hash,revision,status,created_at,updated_at,"
@@ -167,6 +155,33 @@ class TexPreviewJobs:
                                 proposal_id, base_hash, json.dumps(selected_hunk_ids)))
             self.pool.submit(self._run, pid, jid)
             return self.get(pid, jid)
+
+    def _copy_assets(self, pid, assets, folder):
+        # ZIPs may place the selected TeX entry in a subdirectory while keeping
+        # figures at the archive root. Capture those resources as fallbacks;
+        # the entry's own directory always takes precedence. Never walk above
+        # this project's uploaded archive, or broaden ordinary project assets.
+        archive = (self.root / "projects" / pid / "uploaded").resolve()
+        layers = [assets]
+        if archive.is_relative_to(self.root) and assets.is_relative_to(archive):
+            parent = assets
+            while parent != archive:
+                parent = parent.parent
+                layers.insert(0, parent)
+        seen = set()
+        for layer in layers:
+            for item in layer.rglob("*"):
+                if not item.is_file() or item.suffix.lower() not in ASSET_SUFFIXES:
+                    continue
+                resolved = item.resolve()
+                if not resolved.is_relative_to(layer):
+                    raise ValueError("素材不能通过链接读取工程目录以外的内容。")
+                seen.add(resolved)
+                if len(seen) > 500 or item.stat().st_size > 100_000_000:
+                    raise ValueError("预览素材数量或单文件过大。")
+                destination = folder / item.relative_to(layer)
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(item, destination)
 
     def _update(self, jid, **fields):
         fields["updated_at"] = now()

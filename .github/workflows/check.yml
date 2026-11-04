@@ -16,3 +16,4 @@ jobs:
       - run: node --check static/section-pdf.js
       - run: node tests/test_section_pdf.cjs
       - run: python -m unittest discover -s tests -p test_project_upload.py -v
+      - run: python -m unittest discover -s tests -p test_tex_preview.py -v
